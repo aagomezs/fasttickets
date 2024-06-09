@@ -8,42 +8,44 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.unir.fasttickets.repository.entity.ProductoEntity;
-import com.unir.fasttickets.service.ProductoService;
+import com.unir.fasttickets.repository.entity.VentaEntity;
+import com.unir.fasttickets.service.VentaService;
 import jakarta.validation.Valid;
 import java.util.List;
 
 
 @RestController
-@RequestMapping ("/productos")
+@RequestMapping("/ventas")
 
-public class ProductoController {
+public class VentaController {
+
     @Autowired
-    ProductoService productoService;
+    VentaService ventaService;
 
-   @GetMapping("/all")
-    public List<ProductoEntity> getAll(){
-        return productoService.findAll();
+    @GetMapping("/all")
+    public List<VentaEntity> getAll(){
+        return ventaService.findAll();
     }
 
     @PostMapping("/save")
-        public ProductoEntity save(@Valid @RequestBody ProductoEntity productoEntity) {
-            return productoService.save(productoEntity);
+        public VentaEntity save(@Valid @RequestBody VentaEntity ventaEntity) {
+            return ventaService.save(ventaEntity);
         }
     
     @PutMapping("/update/{id}")
-    public ProductoEntity update(@RequestBody ProductoEntity productoEntity, @PathVariable(name = "id") int id ) {
-        ProductoEntity producto = new ProductoEntity();
-        producto = productoEntity;
-        producto.setId(id);
+    public VentaEntity update(@RequestBody VentaEntity ventaEntity, @PathVariable(name = "id") int id ) {
+        VentaEntity venta = new VentaEntity();
+        venta = ventaEntity;
+        venta.setId(id);
         
-        return productoService.save(producto);
+        return ventaService.save(venta);
     }
     
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable(name = "id") int id){
-        return productoService.delete(id);
+        return ventaService.delete(id);
     } 
+
+
 
 }
