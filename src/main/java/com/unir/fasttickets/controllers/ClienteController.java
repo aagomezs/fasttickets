@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.unir.fasttickets.persistencia.entity.ClientesEntity;
+import com.unir.fasttickets.repository.entity.ClienteEntity;
 import com.unir.fasttickets.service.ClienteService;
+
 
 @RestController
 @RequestMapping("/clientes")
@@ -19,9 +20,8 @@ public class ClienteController {
     ClienteService clienteService;
 
     @GetMapping("/all")
-    public List<ClientesEntity> getAll(){
+    public List<ClienteEntity> getAll(){
         return clienteService.findAll();
     }
-
 }
 
