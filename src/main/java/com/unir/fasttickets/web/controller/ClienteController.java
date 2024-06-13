@@ -1,4 +1,4 @@
-package com.unir.fasttickets.controllers;
+package com.unir.fasttickets.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.unir.fasttickets.repository.entity.ClienteEntity;
-import com.unir.fasttickets.service.ClienteService;
+
+import com.unir.fasttickets.domain.service.ClienteService;
+import com.unir.fasttickets.persistence.entity.ClienteEntity;
+
 import jakarta.validation.Valid;
 import java.util.List;
 
@@ -18,7 +20,6 @@ import java.util.List;
 @RequestMapping("/clientes")
 
 public class ClienteController {
-
     @Autowired
     ClienteService clienteService;
 

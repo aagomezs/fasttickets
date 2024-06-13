@@ -1,4 +1,4 @@
-package com.unir.fasttickets.controllers;
+package com.unir.fasttickets.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.unir.fasttickets.repository.entity.ProductoEntity;
-import com.unir.fasttickets.service.ProductoService;
+import com.unir.fasttickets.domain.service.ProductoService;
+import com.unir.fasttickets.persistence.entity.ProductoEntity;
+
 import jakarta.validation.Valid;
 import java.util.List;
 
