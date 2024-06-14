@@ -2,6 +2,8 @@ package com.unir.fasttickets.persistence.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,10 +29,13 @@ public class ClienteEntity {
     private int id;
     @NotBlank
     private String nombre;
+    @NotBlank
     private String celular;
+    @NotBlank
     @Email(message = "no tiene formato válido")
     private String email;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
     private List<VentaEntity> ventas;
 }

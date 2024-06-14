@@ -1,11 +1,9 @@
 package com.unir.fasttickets.domain.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import com.unir.fasttickets.persistence.entity.VentaEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.unir.fasttickets.persistence.entity.VentaEntity;
-
 @Repository
-public interface VentaRepository extends CrudRepository<VentaEntity, Integer> {
-
+public interface VentaRepository extends JpaRepository<VentaEntity, Integer> {
 }

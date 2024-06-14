@@ -2,6 +2,8 @@ package com.unir.fasttickets.persistence.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,5 +35,6 @@ public class ProductoEntity {
     private int precio;
  
     @OneToMany(mappedBy = "producto")
+    @JsonManagedReference
     private List<VentaEntity> ventas;
 }

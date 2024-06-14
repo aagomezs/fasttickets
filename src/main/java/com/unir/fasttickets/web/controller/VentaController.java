@@ -1,5 +1,7 @@
 package com.unir.fasttickets.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,52 +11,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unir.fasttickets.domain.dto.VentaDto;
 import com.unir.fasttickets.domain.service.VentaService;
-import com.unir.fasttickets.persistence.entity.VentaEntity;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import java.time.LocalDateTime;
-
 
 @RestController
 @RequestMapping("/ventas")
-
 public class VentaController {
 
     @Autowired
     VentaService ventaService;
 
     @GetMapping("/all")
-    public List<VentaEntity> getAll(){
-        return ventaService.findAll();
+    public ResponseEntity<List<VentaDto>> getAll() {
+        return new ResponseEntity<>(ventaService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VentaDto> getById(@PathVariable int id) {
+        return ventaService.getById(id)
+                .map(venta -> new ResponseEntity<>(venta, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/save")
-        public VentaEntity save(@Valid @RequestBody VentaEntity ventaEntity) {
-            ventaEntity.setFecha(LocalDateTime.now());
-            return ventaService.save(ventaEntity);
-        }
-    
+    public ResponseEntity<VentaDto> save(@Valid @RequestBody VentaDto ventaDto) {
+        return new ResponseEntity<>(ventaService.save(ventaDto), HttpStatus.CREATED);
+    }
+
     @PutMapping("/update/{id}")
-    public VentaEntity update(@RequestBody VentaEntity ventaEntity, @PathVariable(name = "id") int id ) {
-        VentaEntity venta = ventaService.findById(id);
-        if (venta != null) {
-            venta.setFecha(ventaEntity.getFecha());
-            venta.setIdCliente(ventaEntity.getIdCliente());
-            venta.setIdProducto(ventaEntity.getIdProducto());
-            return ventaService.save(venta);
+    public ResponseEntity<VentaDto> update(@RequestBody VentaDto ventaDto, @PathVariable int id) {
+        ventaDto.setId(id);
+        return ventaService.getById(id)
+                .map(existingVenta -> new ResponseEntity<>(ventaService.save(ventaDto), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) {
+        if (ventaService.delete(id)) {
+            return new ResponseEntity<>("Venta eliminada con éxito", HttpStatus.OK);
         } else {
-            // Manejo de error: venta no encontrada
-            return null;
+            return new ResponseEntity<>("Venta no encontrada", HttpStatus.NOT_FOUND);
         }
     }
-    
-    @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable(name = "id") int id){
-        return ventaService.delete(id);
-    } 
-
-
-
 }

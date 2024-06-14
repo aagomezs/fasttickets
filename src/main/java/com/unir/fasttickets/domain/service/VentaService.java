@@ -1,55 +1,43 @@
 package com.unir.fasttickets.domain.service;
-
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.unir.fasttickets.domain.repository.ClienteRepository;
-import com.unir.fasttickets.domain.repository.ProductoRepository;
+import com.unir.fasttickets.domain.dto.VentaDto;
 import com.unir.fasttickets.domain.repository.VentaRepository;
 import com.unir.fasttickets.persistence.entity.VentaEntity;
+import com.unir.fasttickets.persistence.mapper.VentaMapper;
 
 @Service
 public class VentaService {
 
     @Autowired
-    VentaRepository ventaDtoRepository;
+    private VentaRepository ventaRepository;
 
-    @Autowired
-    ClienteRepository clienteDtoRepository;
-
-    @Autowired
-    ProductoRepository productoDtoRepository;
-
-
-    public List<VentaEntity> findAll(){ 
-        return (List<VentaEntity>) ventaDtoRepository.findAll();
-
+    public List<VentaDto> getAll() {
+        return ventaRepository.findAll().stream()
+                .map(VentaMapper.INSTANCE::toDto)
+                .collect(Collectors.toList());
     }
 
-    public VentaEntity findById(int id) {
-        return ventaDtoRepository.findById(id).orElse(null);
+    public Optional<VentaDto> getById(int id) {
+        return ventaRepository.findById(id)
+                .map(VentaMapper.INSTANCE::toDto);
     }
 
-    public VentaEntity save(VentaEntity venta){
-        return ventaDtoRepository.save(venta);
-
+    public VentaDto save(VentaDto ventaDto) {
+        VentaEntity ventaEntity = VentaMapper.INSTANCE.toEntity(ventaDto);
+        VentaEntity savedEntity = ventaRepository.save(ventaEntity);
+        return VentaMapper.INSTANCE.toDto(savedEntity);
     }
 
-    // public VentaEntity save(VentaEntity venta){ 
-    //     ClienteEntity cliente = clienteDtoRepository.findById(venta.getIdCliente()).orElse(null);
-    //     ProductoEntity producto = productoDtoRepository.findById(venta.getIdProducto()).orElse(null);
- 
-    //     venta.setCliente(cliente);
-    //     venta.setProducto(producto);
-
-    //     return ventaDtoRepository.save(venta);
-    // }
-
-
-    public String delete(int id){
-        ventaDtoRepository.deleteById(id);
-        return "Registro eliminado";
+    public boolean delete(int id) {
+        return ventaRepository.findById(id).map(ventaEntity -> {
+            ventaRepository.deleteById(id);
+            return true;
+        }).orElse(false);
     }
 }

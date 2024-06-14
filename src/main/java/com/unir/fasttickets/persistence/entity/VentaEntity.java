@@ -2,7 +2,8 @@ package com.unir.fasttickets.persistence.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,20 +27,14 @@ public class VentaEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private LocalDateTime fecha; 
-
-    @Column(name = "id_cliente")
-    private int idCliente;
-
-    @Column(name = "id_producto")
-    private int idProducto;
-
+ 
     @ManyToOne
     @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
+    @JsonBackReference
     private ClienteEntity cliente;
 
     @ManyToOne
     @JoinColumn(name = "id_producto", insertable = false, updatable = false)
-    private ProductoEntity producto;
- 
-
+    @JsonBackReference
+    private ProductoEntity producto; 
 }
