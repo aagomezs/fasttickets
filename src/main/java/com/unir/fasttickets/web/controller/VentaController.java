@@ -38,7 +38,8 @@ public class VentaController {
 
     @PostMapping("/save")
     public ResponseEntity<VentaDto> save(@Valid @RequestBody VentaDto ventaDto) {
-        return new ResponseEntity<>(ventaService.save(ventaDto), HttpStatus.CREATED);
+        VentaDto savedVentaDto = ventaService.save(ventaDto);
+        return new ResponseEntity<>(savedVentaDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")

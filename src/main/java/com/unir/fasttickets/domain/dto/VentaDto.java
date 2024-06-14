@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 public class VentaDto {
     private int id;
+    private int clienteId;  
+    private int productoId;
     private LocalDateTime fecha;
     private String nombreCliente;
     private String nombreEvento;
@@ -15,6 +17,22 @@ public class VentaDto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
+    }
+
+    public int getProductoId() {
+        return productoId;
+    }
+
+    public void setProductoId(int productoId) {
+        this.productoId = productoId;
     }
 
     public LocalDateTime getFecha() {
