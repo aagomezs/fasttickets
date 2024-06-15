@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.unir.fasttickets.domain.dto.ClienteDto;
@@ -47,9 +48,11 @@ public class ClienteService {
     }
 
     public boolean delete(int id) {
-        return clienteRepository.findById(id).map(clienteEntity -> {
+       try {
             clienteRepository.deleteById(id);
             return true;
-        }).orElse(false);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("No se puede eliminar este cliente porque está asociado a una venta");
+        }
     }
 }

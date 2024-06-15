@@ -60,10 +60,14 @@ public class ClienteController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
-        if (clienteService.delete(id)) {
-            return new ResponseEntity<>("Cliente eliminado con éxito", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Cliente no encontrado", HttpStatus.NOT_FOUND);
+        try{
+            if (clienteService.delete(id)) {
+                return new ResponseEntity<>("Cliente eliminado con éxito", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cliente no encontrado", HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 }

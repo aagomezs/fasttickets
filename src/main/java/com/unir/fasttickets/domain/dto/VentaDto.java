@@ -9,7 +9,7 @@ public class VentaDto {
     private LocalDateTime fecha;
     private String nombreCliente;
     private String nombreEvento;
-    private String localidad;
+    private String localidad; 
 
     public int getId() {
         return id;
@@ -65,5 +65,5 @@ public class VentaDto {
 
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
-    }
+    } 
 }

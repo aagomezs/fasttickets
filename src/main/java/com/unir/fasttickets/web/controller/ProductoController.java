@@ -53,10 +53,14 @@ public class ProductoController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
-        if (productoService.delete(id)) {
-            return new ResponseEntity<>("Producto eliminado con éxito", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
+        try {
+            if (productoService.delete(id)) {
+                return new ResponseEntity<>("Producto eliminado con éxito", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 }

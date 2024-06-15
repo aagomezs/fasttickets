@@ -29,12 +29,15 @@ public class VentaEntity {
     private LocalDateTime fecha; 
  
     @ManyToOne
-    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private ClienteEntity cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_producto", insertable = false, updatable = false)
+    @JoinColumn(name = "id_producto", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private ProductoEntity producto; 
+
+    private Integer id_cliente;
+    private Integer id_producto;
 }

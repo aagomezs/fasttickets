@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.unir.fasttickets.domain.dto.ProductoDto;
@@ -41,9 +42,11 @@ public class ProductoService {
     }
 
     public boolean delete(int id) {
-        return productoRepository.findById(id).map(productoEntity -> {
+     try {
             productoRepository.deleteById(id);
             return true;
-        }).orElse(false);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("No se puede eliminar este producto porque está asociado a una venta");
+        }
     }
 }

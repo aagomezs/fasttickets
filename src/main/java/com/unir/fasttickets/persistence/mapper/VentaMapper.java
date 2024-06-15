@@ -11,11 +11,11 @@ import org.mapstruct.factory.Mappers;
 public interface VentaMapper {
     VentaMapper INSTANCE = Mappers.getMapper(VentaMapper.class);
 
+    @Mapping(source = "cliente.id", target = "clienteId")
+    @Mapping(source = "producto.id", target = "productoId")
     @Mapping(source = "cliente.nombre", target = "nombreCliente")
     @Mapping(source = "producto.nombreEvento", target = "nombreEvento")
-    @Mapping(source = "producto.localidad", target = "localidad")
-    @Mapping(target = "clienteId", ignore = true)  
-    @Mapping(target = "productoId", ignore = true)  
+    @Mapping(source = "producto.localidad", target = "localidad") 
     VentaDto toDto(VentaEntity entity);
  
     VentaEntity toEntity(VentaDto dto);

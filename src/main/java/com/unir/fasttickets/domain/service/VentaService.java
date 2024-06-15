@@ -50,6 +50,8 @@ public class VentaService {
         ventaEntity.setCliente(cliente);
         ventaEntity.setProducto(producto);
         ventaEntity.setFecha(LocalDateTime.now());
+        ventaEntity.setId_cliente(ventaDto.getClienteId());
+        ventaEntity.setId_producto(ventaDto.getProductoId());
 
         VentaEntity savedVentaEntity = ventaRepository.save(ventaEntity);
 
