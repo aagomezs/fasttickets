@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { saveProducto, updateProducto, getProductoById } from '../services/productoService';
 import { useNavigate, useParams } from 'react-router-dom';
-import useProductos from '../services/productoService';
 import HomeButton from './HomeButton';
+import ProductoList from './ProductoList';
 
 const ProductoForm = () => {
   const [producto, setProducto] = useState({
@@ -10,7 +11,6 @@ const ProductoForm = () => {
     localidad: '',
     precio: 0
   });
-  const { productos, saveProducto, updateProducto, deleteProducto, getProductoById, getAllProductos } = useProductos();
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -18,12 +18,7 @@ const ProductoForm = () => {
     if (id) {
       getProductoById(id).then(data => setProducto(data));
     }
-    fetchProductos();
   }, [id]);
-
-  const fetchProductos = async () => {
-    await getAllProductos(); 
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,25 +35,7 @@ const ProductoForm = () => {
     } else {
       await saveProducto(producto);
     }
-    fetchProductos();
     navigate('/productos/add');
-    setProducto({
-      nombreEvento: '',
-      lugarEvento: '',
-      localidad: '',
-      precio: 0
-    });
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/productos/edit/${id}`);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm('¿Estás seguro de eliminar este producto?')) {
-      await deleteProducto(id);
-      fetchProductos();
-    }
   };
 
   return (
@@ -100,36 +77,7 @@ const ProductoForm = () => {
         <button type="submit" className="btn btn-primary">Guardar</button>
       </form>
 
-      <div className="mt-4">
-        <h2>Listado de eventos</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Evento</th>
-              <th>Lugar</th>
-              <th>Localidad</th>
-              <th>Precio</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productos.map(producto => (
-              <tr key={producto.id}>
-                <td>{producto.id}</td>
-                <td>{producto.nombreEvento}</td>
-                <td>{producto.lugarEvento}</td>
-                <td>{producto.localidad}</td>
-                <td>{producto.precio}</td>
-                <td>
-                  <button onClick={() => handleEdit(producto.id)} className="btn btn-sm btn-warning mr-2">Editar</button>
-                  <button onClick={() => handleDelete(producto.id)} className="btn btn-sm btn-danger">Eliminar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <ProductoList />
 
       <div className="mt-4">
         <HomeButton />

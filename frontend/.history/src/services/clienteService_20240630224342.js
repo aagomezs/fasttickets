@@ -67,7 +67,7 @@ const useClientes = () => {
     }
   };
 
-  return { clientes, getAllClientes, getClienteById, saveCliente, updateCliente, deleteCliente };
+  return { clientes, getClienteById, saveCliente, updateCliente, deleteCliente };
 };
 
 export default useClientes;

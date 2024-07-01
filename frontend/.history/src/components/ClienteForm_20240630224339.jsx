@@ -9,20 +9,20 @@ const ClienteForm = () => {
     email: '',
     celular: '',
   });
-  const { clientes, getClienteById, saveCliente, updateCliente, deleteCliente, getAllClientes } = useClientes(); 
+  const [clientes, setClientes] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
+    fetchClientes();
     if (id) {
       getClienteById(id).then(data => setCliente(data));
     }
-    fetchClientes();
   }, [id]);
 
-
   const fetchClientes = async () => {
-    await getAllClientes(); 
+    const data = await getAllClientes();
+    setClientes(data);
   };
 
   const handleChange = (e) => {
@@ -42,11 +42,6 @@ const ClienteForm = () => {
     }
     fetchClientes();
     navigate('/clientes/add');
-    setCliente({   
-      nombre: '',
-      email: '',
-      celular: '',
-    });
   };
 
   const handleEdit = (id) => {

@@ -40,7 +40,6 @@ const ClienteForm = () => {
     } else {
       await saveCliente(cliente);
     }
-    fetchClientes();
     navigate('/clientes/add');
     setCliente({   
       nombre: '',
@@ -56,7 +55,6 @@ const ClienteForm = () => {
   const handleDelete = async (id) => {
     if (window.confirm('¿Estás seguro de eliminar este cliente?')) {
       await deleteCliente(id);
-      fetchClientes();
     }
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useProductos from '../services/productoService';
 import HomeButton from './HomeButton';
+import useProductos from '../services/productoService';
 
 const ProductoForm = () => {
   const [producto, setProducto] = useState({

@@ -43,7 +43,21 @@ const useVentas = () => {
       navigate('/notFound');
     }
   };
- 
+
+  const updateVenta = async (id, venta) => {
+    try {
+      const res = await axios.put(`${apiUrl}/update/${id}`, venta, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      getAllVentas();
+      return res.data;
+    } catch (error) {
+      navigate('/notFound');
+    }
+  };
+
   const deleteVenta = async (id) => {
     try {
       await axios.delete(`${apiUrl}/delete/${id}`);
@@ -52,8 +66,8 @@ const useVentas = () => {
       navigate('/notFound');
     }
   };
- 
-  return { ventas, getAllVentas, getVentaById, saveVenta, deleteVenta };
+
+  return { ventas, getVentaById, saveVenta, updateVenta, deleteVenta };
 };
 
 export default useVentas;

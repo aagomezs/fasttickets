@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { saveProducto, updateProducto, getProductoById, getAllProductos, deleteProducto } from '../services/productoService';
 import { useNavigate, useParams } from 'react-router-dom';
-import useProductos from '../services/productoService';
-import HomeButton from './HomeButton';
 
 const ProductoForm = () => {
   const [producto, setProducto] = useState({
@@ -10,7 +9,7 @@ const ProductoForm = () => {
     localidad: '',
     precio: 0
   });
-  const { productos, saveProducto, updateProducto, deleteProducto, getProductoById, getAllProductos } = useProductos();
+  const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -22,7 +21,8 @@ const ProductoForm = () => {
   }, [id]);
 
   const fetchProductos = async () => {
-    await getAllProductos(); 
+    const data = await getAllProductos();
+    setProductos(data);
   };
 
   const handleChange = (e) => {
@@ -42,12 +42,6 @@ const ProductoForm = () => {
     }
     fetchProductos();
     navigate('/productos/add');
-    setProducto({
-      nombreEvento: '',
-      lugarEvento: '',
-      localidad: '',
-      precio: 0
-    });
   };
 
   const handleEdit = (id) => {
@@ -99,7 +93,7 @@ const ProductoForm = () => {
         />
         <button type="submit" className="btn btn-primary">Guardar</button>
       </form>
-
+  
       <div className="mt-4">
         <h2>Listado de eventos</h2>
         <table className="table">
@@ -107,7 +101,6 @@ const ProductoForm = () => {
             <tr>
               <th>ID</th>
               <th>Evento</th>
-              <th>Lugar</th>
               <th>Localidad</th>
               <th>Precio</th>
               <th>Acciones</th>
@@ -118,7 +111,6 @@ const ProductoForm = () => {
               <tr key={producto.id}>
                 <td>{producto.id}</td>
                 <td>{producto.nombreEvento}</td>
-                <td>{producto.lugarEvento}</td>
                 <td>{producto.localidad}</td>
                 <td>{producto.precio}</td>
                 <td>
@@ -132,9 +124,9 @@ const ProductoForm = () => {
       </div>
 
       <div className="mt-4">
-        <HomeButton />
+        <button onClick={() => navigate('/')} className="btn btn-secondary">Home</button>
       </div>
-    </div>
+    </div> 
   );
 };
 
