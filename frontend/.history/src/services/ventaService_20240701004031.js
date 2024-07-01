@@ -17,7 +17,7 @@ const useVentas = () => {
       const res = await axios.get(`${apiUrl}/all`);
       setVentas(res.data);
     } catch (error) {
-      navigate('/notFound');
+      handleErrors(error);
     }
   };
 
@@ -26,7 +26,7 @@ const useVentas = () => {
       const res = await axios.get(`${apiUrl}/${id}`);
       return res.data;
     } catch (error) {
-      navigate('/notFound');
+      handleErrors(error);
     }
   };
 
@@ -40,20 +40,47 @@ const useVentas = () => {
       getAllVentas();
       return res.data;
     } catch (error) {
-      navigate('/notFound');
+      handleErrors(error);
     }
   };
- 
+
+  const updateVenta = async (id, venta) => {
+    try {
+      const res = await axios.put(`${apiUrl}/update/${id}`, venta, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      getAllVentas();
+      return res.data;
+    } catch (error) {
+      handleErrors(error);
+    }
+  };
+
   const deleteVenta = async (id) => {
     try {
       await axios.delete(`${apiUrl}/delete/${id}`);
       getAllVentas();
     } catch (error) {
-      navigate('/notFound');
+      handleErrors(error);
     }
   };
- 
-  return { ventas, getAllVentas, getVentaById, saveVenta, deleteVenta };
+
+  const handleErrors = (error) => {
+    if (error.response) {
+      console.error('Request error:', error.response.data);
+      navigate('/error');
+    } else if (error.request) {
+      console.error('No response from server:', error.request);
+      navigate('/error'); 
+    } else {
+      console.error('Error:', error.message);
+      navigate('/error');
+    }
+  };
+
+  return { ventas, getVentaById, saveVenta, updateVenta, deleteVenta };
 };
 
 export default useVentas;

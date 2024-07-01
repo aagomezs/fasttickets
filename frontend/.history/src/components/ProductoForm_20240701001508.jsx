@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useProductos from '../services/productoService';
 import HomeButton from './HomeButton';
+import useProductos from '../services/productoService';
 
 const ProductoForm = () => {
   const [producto, setProducto] = useState({
@@ -107,7 +107,6 @@ const ProductoForm = () => {
             <tr>
               <th>ID</th>
               <th>Evento</th>
-              <th>Lugar</th>
               <th>Localidad</th>
               <th>Precio</th>
               <th>Acciones</th>
@@ -118,7 +117,6 @@ const ProductoForm = () => {
               <tr key={producto.id}>
                 <td>{producto.id}</td>
                 <td>{producto.nombreEvento}</td>
-                <td>{producto.lugarEvento}</td>
                 <td>{producto.localidad}</td>
                 <td>{producto.precio}</td>
                 <td>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { saveCliente, updateCliente, getClienteById, getAllClientes, deleteCliente } from '../services/clienteService';
 import { useNavigate, useParams } from 'react-router-dom';
-import useClientes from '../services/clienteService';
-import HomeButton from './HomeButton';
 
 const ClienteForm = () => {
   const [cliente, setCliente] = useState({
@@ -9,20 +8,20 @@ const ClienteForm = () => {
     email: '',
     celular: '',
   });
-  const { clientes, getClienteById, saveCliente, updateCliente, deleteCliente, getAllClientes } = useClientes(); 
+  const [clientes, setClientes] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
+    fetchClientes();
     if (id) {
       getClienteById(id).then(data => setCliente(data));
     }
-    fetchClientes();
   }, [id]);
 
-
   const fetchClientes = async () => {
-    await getAllClientes(); 
+    const data = await getAllClientes();
+    setClientes(data);
   };
 
   const handleChange = (e) => {
@@ -42,11 +41,6 @@ const ClienteForm = () => {
     }
     fetchClientes();
     navigate('/clientes/add');
-    setCliente({   
-      nombre: '',
-      email: '',
-      celular: '',
-    });
   };
 
   const handleEdit = (id) => {
@@ -122,7 +116,7 @@ const ClienteForm = () => {
       </div>
 
       <div className="mt-4">
-        <HomeButton />
+        <button onClick={() => navigate("/")} className="btn btn-secondary">Home</button>
       </div>
     </div>
   );

@@ -14,28 +14,32 @@ const VentaForm = () => {
   const [fecha, setFecha] = useState('');
   const navigate = useNavigate();
 
-  const { getAllClientes, clientes: allClientes } = useClientes();
-  const { getAllProductos, productos: allProductos } = useProductos();
+  const { getAllClientes } = useClientes();
+  const { getAllProductos } = useProductos();
 
   useEffect(() => {
     fetchClientes();
     fetchProductos();
   }, []);
 
-  useEffect(() => {
-    setClientes(allClientes);
-  }, [allClientes]);
-
-  useEffect(() => {
-    setProductos(allProductos);
-  }, [allProductos]);
-
   const fetchClientes = async () => {
-    await getAllClientes();
+    try {
+      const data = await getAllClientes();
+      setClientes(data);
+    } catch (error) {
+      console.error('Error al obtener clientes:', error);
+      navigate('/error');
+    }
   };
 
   const fetchProductos = async () => {
-    await getAllProductos();
+    try {
+      const data = await getAllProductos();
+      setProductos(data);
+    } catch (error) {
+      console.error('Error al obtener productos:', error);
+      navigate('/error');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -64,12 +68,12 @@ const VentaForm = () => {
   };
 
   const getClienteName = (id) => {
-    const cliente = clientes.find((c) => c.id === id);
+    const cliente = clientes.find(c => c.id === id);
     return cliente ? cliente.nombre : '';
   };
 
   const getProductoName = (id) => {
-    const producto = productos.find((p) => p.id === id);
+    const producto = productos.find(p => p.id === id);
     return producto ? producto.nombreEvento : '';
   };
 
@@ -78,9 +82,7 @@ const VentaForm = () => {
       <h2>Nueva venta</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="cliente" className="form-label">
-            Cliente:
-          </label>
+          <label htmlFor="cliente" className="form-label">Cliente:</label>
           <select
             id="cliente"
             className="form-select"
@@ -88,7 +90,7 @@ const VentaForm = () => {
             onChange={(e) => setClienteId(e.target.value)}
           >
             <option value="">Seleccione un cliente</option>
-            {clientes.map((cliente) => (
+            {clientes.map(cliente => (
               <option key={cliente.id} value={cliente.id}>
                 {cliente.nombre}
               </option>
@@ -96,9 +98,7 @@ const VentaForm = () => {
           </select>
         </div>
         <div className="mb-3">
-          <label htmlFor="producto" className="form-label">
-            Producto:
-          </label>
+          <label htmlFor="producto" className="form-label">Producto:</label>
           <select
             id="producto"
             className="form-select"
@@ -106,16 +106,24 @@ const VentaForm = () => {
             onChange={(e) => setProductoId(e.target.value)}
           >
             <option value="">Seleccione un producto</option>
-            {productos.map((producto) => (
+            {productos.map(producto => (
               <option key={producto.id} value={producto.id}>
                 {producto.nombreEvento}
               </option>
             ))}
           </select>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Guardar
-        </button>
+        <div className="mb-3">
+          <label htmlFor="fecha" className="form-label">Fecha:</label>
+          <input
+            type="date"
+            id="fecha"
+            className="form-control"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">Guardar</button>
       </form>
 
       <div className="mt-4">
@@ -131,19 +139,14 @@ const VentaForm = () => {
             </tr>
           </thead>
           <tbody>
-            {ventas.map((venta) => (
+            {ventas.map(venta => (
               <tr key={venta.id}>
                 <td>{venta.id}</td>
                 <td>{getClienteName(venta.clienteId)}</td>
                 <td>{getProductoName(venta.productoId)}</td>
                 <td>{new Date(venta.fecha).toISOString().slice(0, 10)}</td>
                 <td>
-                  <button
-                    className="btn btn-sm btn-danger ml-2"
-                    onClick={() => handleDelete(venta.id)}
-                  >
-                    Eliminar
-                  </button>
+                  <button className="btn btn-sm btn-danger ml-2" onClick={() => handleDelete(venta.id)}>Eliminar</button>
                 </td>
               </tr>
             ))}

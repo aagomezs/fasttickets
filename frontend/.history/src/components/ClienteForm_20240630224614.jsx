@@ -9,7 +9,7 @@ const ClienteForm = () => {
     email: '',
     celular: '',
   });
-  const { clientes, getClienteById, saveCliente, updateCliente, deleteCliente, getAllClientes } = useClientes(); 
+  const { clientes, getClienteById, saveCliente, updateCliente, deleteCliente } = useClientes(); // Usar el hook personalizado
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -17,13 +17,7 @@ const ClienteForm = () => {
     if (id) {
       getClienteById(id).then(data => setCliente(data));
     }
-    fetchClientes();
-  }, [id]);
-
-
-  const fetchClientes = async () => {
-    await getAllClientes(); 
-  };
+  }, [id, getClienteById]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,13 +34,7 @@ const ClienteForm = () => {
     } else {
       await saveCliente(cliente);
     }
-    fetchClientes();
     navigate('/clientes/add');
-    setCliente({   
-      nombre: '',
-      email: '',
-      celular: '',
-    });
   };
 
   const handleEdit = (id) => {
@@ -56,7 +44,6 @@ const ClienteForm = () => {
   const handleDelete = async (id) => {
     if (window.confirm('¿Estás seguro de eliminar este cliente?')) {
       await deleteCliente(id);
-      fetchClientes();
     }
   };
 

@@ -2,26 +2,26 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const apiUrl = 'http://localhost:8000/clientes';
+const apiUrl = 'http://localhost:8000/productos';
 
-const useClientes = () => {
-  const [clientes, setClientes] = useState([]);
+const useProductos = () => {
+  const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllClientes();
+    getAllProductos();
   }, []);
 
-  const getAllClientes = async () => {
+  const getAllProductos = async () => {
     try {
       const res = await axios.get(`${apiUrl}/all`);
-      setClientes(res.data);
+      setProductos(res.data);
     } catch (error) {
       navigate('/notFound');
     }
   };
 
-  const getClienteById = async (id) => {
+  const getProductoById = async (id) => {
     try {
       const res = await axios.get(`${apiUrl}/${id}`);
       return res.data;
@@ -30,44 +30,44 @@ const useClientes = () => {
     }
   };
 
-  const saveCliente = async (cliente) => {
+  const saveProducto = async (producto) => {
     try {
-      const res = await axios.post(`${apiUrl}/save`, cliente, {
+      const res = await axios.post(`${apiUrl}/save`, producto, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      getAllClientes();
+      getAllProductos();
       return res.data;
     } catch (error) {
       navigate('/notFound');
     }
   };
 
-  const updateCliente = async (id, cliente) => {
+  const updateProducto = async (id, producto) => {
     try {
-      const res = await axios.put(`${apiUrl}/update/${id}`, cliente, {
+      const res = await axios.put(`${apiUrl}/update/${id}`, producto, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      getAllClientes();
+      getAllProductos();
       return res.data;
     } catch (error) {
       navigate('/notFound');
     }
   };
 
-  const deleteCliente = async (id) => {
+  const deleteProducto = async (id) => {
     try {
       await axios.delete(`${apiUrl}/delete/${id}`);
-      getAllClientes();
+      getAllProductos();
     } catch (error) {
       navigate('/notFound');
     }
   };
 
-  return { clientes, getAllClientes, getClienteById, saveCliente, updateCliente, deleteCliente };
+  return { productos, getProductoById, saveProducto, updateProducto, deleteProducto };
 };
 
-export default useClientes;
+export default useProductos;

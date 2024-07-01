@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useProductos from '../services/productoService';
 import HomeButton from './HomeButton';
+import useProductos from '../services/productoService';
 
 const ProductoForm = () => {
   const [producto, setProducto] = useState({
@@ -22,7 +22,7 @@ const ProductoForm = () => {
   }, [id]);
 
   const fetchProductos = async () => {
-    await getAllProductos(); 
+    await getAllProductos(); // Utiliza la función getAllProductos del hook
   };
 
   const handleChange = (e) => {
@@ -42,12 +42,6 @@ const ProductoForm = () => {
     }
     fetchProductos();
     navigate('/productos/add');
-    setProducto({
-      nombreEvento: '',
-      lugarEvento: '',
-      localidad: '',
-      precio: 0
-    });
   };
 
   const handleEdit = (id) => {
@@ -107,7 +101,6 @@ const ProductoForm = () => {
             <tr>
               <th>ID</th>
               <th>Evento</th>
-              <th>Lugar</th>
               <th>Localidad</th>
               <th>Precio</th>
               <th>Acciones</th>
@@ -118,7 +111,6 @@ const ProductoForm = () => {
               <tr key={producto.id}>
                 <td>{producto.id}</td>
                 <td>{producto.nombreEvento}</td>
-                <td>{producto.lugarEvento}</td>
                 <td>{producto.localidad}</td>
                 <td>{producto.precio}</td>
                 <td>
